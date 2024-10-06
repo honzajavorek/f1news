@@ -5,9 +5,9 @@ from urllib.parse import parse_qs
 import click
 import feedparser
 
-from crawlee.playwright_crawler import (
-    PlaywrightCrawler,
-    PlaywrightCrawlingContext,
+from crawlee.beautifulsoup_crawler import (
+    BeautifulSoupCrawler,
+    BeautifulSoupCrawlingContext,
 )
 from crawlee.configuration import Configuration
 from crawlee.router import Router
@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("f1")
 
 
-router = Router[PlaywrightCrawlingContext]()
+router = Router[BeautifulSoupCrawlingContext]()
 
 
 @click.command()
@@ -68,11 +68,11 @@ async def scrape(feed_url: str, debug: bool = False):
 
     async with Actor:
         proxy_configuration = await Actor.create_proxy_configuration()
-        crawler = PlaywrightCrawler(
+        logger.info(f"Proxies: {proxy_configuration!r}")
+        crawler = BeautifulSoupCrawler(
             request_handler=router,
             proxy_configuration=proxy_configuration,
             configuration=Configuration(log_level="DEBUG" if debug else "INFO"),
-            browser_type="firefox",
         )
         await crawler.run(links)
         dataset = await crawler.get_dataset()
@@ -85,22 +85,20 @@ async def scrape(feed_url: str, debug: bool = False):
 
 
 @router.default_handler
-async def default_handler(context: PlaywrightCrawlingContext):
+async def default_handler(context: BeautifulSoupCrawlingContext):
     logger.info(f"Scraping {context.request.url}")
 
-    flair_link = await context.page.query_selector(
-        'a[href*="/r/formula1/?f=flair_name"]'
-    )
-    _, query_string = (await flair_link.get_attribute("href")).split("?")
+    flair_link = context.soup.select_one('a[href*="/r/formula1/?f=flair_name"]')
+    _, query_string = flair_link["href"].split("?")
     f_param_value = parse_qs(query_string)["f"][0]
     if f_param_value != 'flair_name:":post-news: News"':
         logger.info(f"Not news: {context.request.url}")
         return
 
-    article_link = await context.page.query_selector(
+    article_link = context.soup.select_one(
         'a[aria-label][target="_blank"][rel*="nofollow"][rel*="noopener"]'
     )
-    article_url = await article_link.get_attribute("href")
+    article_url = article_link["href"]
 
     data = {"reddit_url": context.request.url, "article_url": article_url}
     logger.info(f"Saving {data!r}")
