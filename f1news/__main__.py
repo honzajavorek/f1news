@@ -67,7 +67,11 @@ async def scrape(feed_url: str, debug: bool = False):
     links = [entry.link for entry in feed.entries]
 
     async with Actor:
-        proxy_configuration = await Actor.create_proxy_configuration()
+        try:
+            proxy_configuration = await Actor.create_proxy_configuration()
+        except ValueError:
+            proxy_configuration = None
+
         crawler = BeautifulSoupCrawler(
             request_handler=router,
             proxy_configuration=proxy_configuration,
@@ -85,7 +89,7 @@ async def scrape(feed_url: str, debug: bool = False):
 
 @router.default_handler
 async def default_handler(context: BeautifulSoupCrawlingContext):
-    logger.info(f"Scraping {context.request.url}")
+    logger.info(f"Scraping {context.request.url} (proxy: {context.proxy_info})")
 
     flair_link = context.soup.select_one('a[href*="/r/formula1/?f=flair_name"]')
     _, query_string = flair_link["href"].split("?")
