@@ -1,0 +1,34 @@
+{
+  "actorSpecification": 1,
+  "name": "f1",
+  "title": "f1",
+  "version": "0.0",
+  "storages": {
+    "dataset": {
+      "title": "Article",
+      "actorSpecification": 1,
+      "views": {
+        "titles": {
+          "title": "Article",
+          "transformation": {
+            "fields": [
+              "reddit_url",
+              "article_url"
+            ]
+          },
+          "display": {
+            "component": "table",
+            "properties": {
+              "reddit_url": {
+                "label": "reddit_url"
+              },
+              "article_url": {
+                "label": "article_url"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

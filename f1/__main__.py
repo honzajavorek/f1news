@@ -13,6 +13,7 @@ from crawlee.configuration import Configuration
 from crawlee.router import Router
 import httpx
 from lxml import etree
+from apify import Actor
 
 
 logging.basicConfig(level=logging.INFO)
@@ -65,12 +66,13 @@ async def scrape(feed_url: str, debug: bool = False):
     feed = feedparser.parse(rss)
     links = [entry.link for entry in feed.entries]
 
-    crawler = BeautifulSoupCrawler(
-        request_handler=router,
-        configuration=Configuration(log_level="DEBUG" if debug else "INFO"),
-    )
-    await crawler.run(links)
-    dataset = await crawler.get_dataset(name="f1")
+    async with Actor:
+        crawler = BeautifulSoupCrawler(
+            request_handler=router,
+            configuration=Configuration(log_level="DEBUG" if debug else "INFO"),
+        )
+        await crawler.run(links)
+        dataset = await crawler.get_dataset(name="f1")
 
     url_mapping = {}
     async for article in dataset.iterate_items():
