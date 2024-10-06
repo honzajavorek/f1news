@@ -71,12 +71,16 @@ async def scrape(feed_url: str, debug: bool = False):
         try:
             proxy_configuration = await Actor.create_proxy_configuration()
         except ValueError:
+            logger.warning("Couldn't infer proxy configuration")
             proxy_configuration = None
+
+        max_concurrency = 1 if Actor.is_at_home() else 200
+        logger.warning(f"Max concurrency: {max_concurrency}")
 
         crawler = BeautifulSoupCrawler(
             request_handler=router,
             proxy_configuration=proxy_configuration,
-            concurrency_settings=ConcurrencySettings(max_concurrency=1),
+            concurrency_settings=ConcurrencySettings(max_concurrency=max_concurrency),
             configuration=Configuration(log_level="DEBUG" if debug else "INFO"),
         )
         await crawler.run(links)
