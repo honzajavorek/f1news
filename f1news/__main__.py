@@ -104,13 +104,13 @@ async def scrape(feed_url: str, debug: bool = False):
 
 @router.default_handler
 async def default_handler(context: BeautifulSoupCrawlingContext):
-    logger.info(f"Scraping {context.request.url} (proxy: {context.proxy_info})")
+    context.log.info(f"Scraping {context.request.url} (proxy: {context.proxy_info})")
 
     flair_link = context.soup.select_one('a[href*="/r/formula1/?f=flair_name"]')
     _, query_string = flair_link["href"].split("?")
     f_param_value = parse_qs(query_string)["f"][0]
     if f_param_value != 'flair_name:":post-news: News"':
-        logger.info(f"Not news: {context.request.url}")
+        context.log.info(f"Not news: {context.request.url}")
         return
 
     article_link = context.soup.select_one(
@@ -119,5 +119,5 @@ async def default_handler(context: BeautifulSoupCrawlingContext):
     article_url = article_link["href"]
 
     data = {"reddit_url": context.request.url, "article_url": article_url}
-    logger.info(f"Saving {data!r}")
+    context.log.info(f"Saving {data!r}")
     await context.push_data(data)
