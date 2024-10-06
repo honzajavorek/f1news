@@ -67,8 +67,10 @@ async def scrape(feed_url: str, debug: bool = False):
     links = [entry.link for entry in feed.entries]
 
     async with Actor:
+        proxy_configuration = await Actor.create_proxy_configuration()
         crawler = PlaywrightCrawler(
             request_handler=router,
+            proxy_configuration=proxy_configuration,
             configuration=Configuration(log_level="DEBUG" if debug else "INFO"),
             browser_type="firefox",
         )
