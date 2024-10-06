@@ -3,6 +3,7 @@ import logging
 from pathlib import Path
 from urllib.parse import parse_qs
 import click
+from crawlee import ConcurrencySettings
 import feedparser
 
 from crawlee.beautifulsoup_crawler import (
@@ -75,6 +76,7 @@ async def scrape(feed_url: str, debug: bool = False):
         crawler = BeautifulSoupCrawler(
             request_handler=router,
             proxy_configuration=proxy_configuration,
+            concurrency_settings=ConcurrencySettings(max_concurrency=1),
             configuration=Configuration(log_level="DEBUG" if debug else "INFO"),
         )
         await crawler.run(links)
