@@ -6,7 +6,7 @@ authors = ["Honza Javorek <mail@honzajavorek.cz>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-f1 = "f1.__main__:main"
+f1news = "f1news.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
