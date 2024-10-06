@@ -1,0 +1,39 @@
+name: scrape
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 4 * * *"
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: pyproject.toml
+          cache: poetry
+
+      - name: Install Python dependencies
+        run: poetry install
+
+      - name: Scrape
+        run: poetry run f1
+
+      - name: Check that data got exported
+        run: "[ -s feed.xml ] || exit 1"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: feed
+          path: feed.xml
