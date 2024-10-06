@@ -10,7 +10,7 @@ f1news = "f1news.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-crawlee = {extras = ["beautifulsoup"], version = "^0.3.5"}
+crawlee = {extras = ["beautifulsoup", "playwright"], version = "^0.3.5"}
 click = "^8.1.7"
 pydantic = "^2.9.2"
 feedparser = "^6.0.11"
