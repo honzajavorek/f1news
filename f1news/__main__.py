@@ -68,7 +68,6 @@ async def scrape(feed_url: str, debug: bool = False):
 
     async with Actor:
         proxy_configuration = await Actor.create_proxy_configuration()
-        logger.info(f"Proxies: {proxy_configuration!r}")
         crawler = BeautifulSoupCrawler(
             request_handler=router,
             proxy_configuration=proxy_configuration,
