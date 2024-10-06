@@ -23,4 +23,4 @@ RUN echo "Python version:" \
 
 RUN python3 -m compileall -q ./f1news
 
-CMD ["poetry", "run", "f1news"]
+CMD ["poetry", "run", "f1news", "--debug"]
