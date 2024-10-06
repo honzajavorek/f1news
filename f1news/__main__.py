@@ -81,7 +81,7 @@ async def scrape(feed_url: str, debug: bool = False):
         max_concurrency = 1 if Actor.is_at_home() else 5
         logger.info(f"Max concurrency: {max_concurrency}")
 
-        max_request_retries = 10 if Actor.is_at_home() else 3
+        max_request_retries = 50 if Actor.is_at_home() else 3
         logger.info(f"Max request retries: {max_request_retries}")
 
         crawler = BeautifulSoupCrawler(
