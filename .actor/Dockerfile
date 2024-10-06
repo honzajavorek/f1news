@@ -1,5 +1,4 @@
 FROM apify/actor-python:3.12
-ARG ACTOR_PATH_IN_DOCKER_CONTEXT
 
 RUN rm -rf /usr/src/app/*
 WORKDIR /usr/src/app
@@ -22,5 +21,4 @@ RUN echo "Python version:" \
 
 RUN python3 -m compileall -q ./f1news
 
-ENV ACTOR_PATH_IN_DOCKER_CONTEXT="${ACTOR_PATH_IN_DOCKER_CONTEXT}"
 CMD ["poetry", "run", "f1news"]
