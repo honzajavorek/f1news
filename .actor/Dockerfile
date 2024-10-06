@@ -21,6 +21,6 @@ RUN echo "Python version:" \
  && echo "Installing Playwright dependencies:" \
  && poetry run playwright install firefox --with-deps
 
-RUN python3 -m compileall -q ./f1news
+RUN poetry run python -m compileall -q ./f1news
 
 CMD ["poetry", "run", "f1news", "--debug"]
