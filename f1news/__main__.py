@@ -25,35 +25,40 @@ from lxml import etree
 )
 def main(feed_url: str, output_path: Path):
     output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    click.echo("Fetching feed")
-    response = httpx.get(feed_url)
-    response.raise_for_status()
-
-    click.echo("Parsing feed")
-    xml_bytes = response.content
-    feed = feedparser.parse(xml_bytes)
-
-    url_mapping = {}
-    for entry in feed.entries:
-        click.echo(f"Fetching: {entry.link}")
-        response = httpx.get(entry.link, follow_redirects=True)
+    with httpx.Client(
+        follow_redirects=True,
+        headers={
+            "User-Agent": "FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)"
+        },
+    ) as client:
+        click.echo("Fetching feed")
+        response = client.get(feed_url)
         response.raise_for_status()
 
-        click.echo(f"Parsing: {entry.link}")
-        soup = BeautifulSoup(response.content, "html.parser")
-        flair_link = soup.select_one('a[href*="/r/formula1/?f=flair_name"]')
-        _, query_string = flair_link["href"].split("?")
-        f_param_value = parse_qs(query_string)["f"][0]
-        if f_param_value != 'flair_name:":post-news: News"':
-            click.echo(f"Not news: {entry.link}")
-            continue
-        article_link = soup.select_one(
-            'a[aria-label][target="_blank"][rel*="nofollow"][rel*="noopener"]'
-        )
-        article_url = article_link["href"]
-        click.echo(f"Recording: {entry.link}")
-        url_mapping[entry.link] = article_url
+        click.echo("Parsing feed")
+        xml_bytes = response.content
+        feed = feedparser.parse(xml_bytes)
+
+        url_mapping = {}
+        for entry in feed.entries:
+            click.echo(f"Fetching: {entry.link}")
+            response = client.get(entry.link)
+            response.raise_for_status()
+
+            click.echo(f"Parsing: {entry.link}")
+            soup = BeautifulSoup(response.content, "html.parser")
+            flair_link = soup.select_one('a[href*="/r/formula1/?f=flair_name"]')
+            _, query_string = flair_link["href"].split("?")
+            f_param_value = parse_qs(query_string)["f"][0]
+            if f_param_value != 'flair_name:":post-news: News"':
+                click.echo(f"Not news: {entry.link}")
+                continue
+            article_link = soup.select_one(
+                'a[aria-label][target="_blank"][rel*="nofollow"][rel*="noopener"]'
+            )
+            article_url = article_link["href"]
+            click.echo(f"Recording: {entry.link}")
+            url_mapping[entry.link] = article_url
 
     click.echo("Rewriting feed")
     xml = etree.fromstring(xml_bytes)
