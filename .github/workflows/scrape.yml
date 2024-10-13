@@ -3,8 +3,8 @@ name: scrape
 on:
   push:
     branches: [main]
-  schedule:
-    - cron: "0 4 * * *"
+  # schedule:
+  #   - cron: "0 4 * * *"
   workflow_dispatch:  # allows running this workflow manually from the Actions tab
 
 permissions:
