@@ -28,7 +28,10 @@ def main(feed_url: str, output_path: Path):
     with httpx.Client(
         follow_redirects=True,
         headers={
-            "User-Agent": "FeedFetcher-Google; (+http://www.google.com/feedfetcher.html)"
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:131.0) Gecko/20100101 Firefox/131.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.8,cs;q=0.6,sk;q=0.4,es;q=0.2",
+            "DNT": "1",
         },
     ) as client:
         click.echo("Fetching feed")
