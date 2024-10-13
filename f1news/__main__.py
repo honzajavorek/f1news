@@ -16,6 +16,7 @@ from lxml import etree
     help="RSS feed URL",
 )
 @click.option(
+    "-o",
     "--output",
     "output_path",
     default="feed.xml",
