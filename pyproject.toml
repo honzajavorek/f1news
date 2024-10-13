@@ -3,6 +3,7 @@ name = "f1news"
 version = "0.1.0"
 description = "Honza Javorek's personal F1 news feed"
 authors = ["Honza Javorek <mail@honzajavorek.cz>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 
 [tool.poetry.scripts]
@@ -10,13 +11,11 @@ f1news = "f1news.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-crawlee = {extras = ["beautifulsoup", "playwright"], version = "^0.3.5"}
 click = "^8.1.7"
-pydantic = "^2.9.2"
 feedparser = "^6.0.11"
 httpx = "^0.27.2"
 lxml = "^5.3.0"
-apify = "^2.0.0"
+bs4 = "^0.0.2"
 
 [build-system]
 requires = ["poetry-core"]

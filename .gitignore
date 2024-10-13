@@ -162,5 +162,5 @@ cython_debug/
 #.idea/
 
 # Scraping
-storage
+site/
 feed.xml
