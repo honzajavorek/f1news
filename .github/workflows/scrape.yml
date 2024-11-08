@@ -3,8 +3,8 @@ name: scrape
 on:
   push:
     branches: [main]
-  # schedule:
-  #   - cron: "0 4 * * *"
+  schedule:
+    - cron: "0 4 * * *"
   workflow_dispatch:  # allows running this workflow manually from the Actions tab
 
 permissions:
@@ -44,7 +44,10 @@ jobs:
     #   - name: Code
     #     run: poetry run ruff check
 
-      - name: Scrape
+      - name: Run F1news
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: poetry run f1news -o site/f1news.xml
 
       - name: Setup Pages
