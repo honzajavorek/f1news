@@ -13,7 +13,7 @@ f1news = "f1news.__main__:main"
 python = "^3.12"
 click = "^8.1.7"
 feedparser = "^6.0.11"
-httpx = "^0.28.0"
+httpx = "^0.28.1"
 lxml = "^5.3.0"
 praw = "^7.8.1"
 
