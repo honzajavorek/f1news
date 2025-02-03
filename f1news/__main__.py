@@ -66,9 +66,9 @@ def main(
             with attempt:
                 click.echo(f"Fetching: {entry.link} (attempt #{attempt.num})")
                 submission = reddit.submission(url=entry.link)
-        if submission.link_flair_text == ":post-news: News":
-            click.echo(f"Recording as {submission.url}")
-            url_mapping[entry.link] = submission.url
+                if submission.link_flair_text == ":post-news: News":
+                    click.echo(f"Recording as {submission.url}")
+                    url_mapping[entry.link] = submission.url
         else:
             click.echo("Not news")
 
