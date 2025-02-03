@@ -5,7 +5,7 @@ import feedparser
 import httpx
 from lxml import etree
 import praw
-import praw.exceptions
+import prawcore
 import stamina
 
 
@@ -62,7 +62,7 @@ def main(
 
     url_mapping = {}
     for entry in feed.entries:
-        for attempt in stamina.retry_context(on=praw.exceptions.PRAWException):
+        for attempt in stamina.retry_context(on=prawcore.exceptions.Forbidden):
             with attempt:
                 click.echo(f"Fetching: {entry.link} (attempt #{attempt.num})")
                 submission = reddit.submission(url=entry.link)
