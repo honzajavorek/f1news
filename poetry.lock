@@ -494,6 +494,41 @@ files = [
 ]
 
 [[package]]
+name = "stamina"
+version = "24.3.0"
+description = "Production-grade retries made easy."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "stamina-24.3.0-py3-none-any.whl", hash = "sha256:28caf1a5db514256d86e32b60621630552fa9a60dace4e6fb5c78ba15f26236e"},
+    {file = "stamina-24.3.0.tar.gz", hash = "sha256:1d763c98962ca11f1729c357422926a750a138e803e7beb9f9d6c99d33d9997d"},
+]
+
+[package.dependencies]
+tenacity = "*"
+
+[package.extras]
+dev = ["anyio", "mypy (>=1.4)", "nox (>=2024.3.2)", "prometheus-client", "pytest", "structlog", "tomli", "trio", "uv"]
+docs = ["furo", "myst-parser", "prometheus-client", "sphinx (>=7.2.2)", "sphinx-copybutton", "sphinx-notfound-page", "structlog"]
+tests = ["anyio", "pytest"]
+typing = ["mypy (>=1.4)"]
+
+[[package]]
+name = "tenacity"
+version = "9.0.0"
+description = "Retry code until it succeeds"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539"},
+    {file = "tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b"},
+]
+
+[package.extras]
+doc = ["reno", "sphinx"]
+test = ["pytest", "tornado (>=4.5)", "typeguard"]
+
+[[package]]
 name = "update-checker"
 version = "0.18.0"
 description = "A python module that will check for package updates."
@@ -548,4 +583,4 @@ test = ["websockets"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "42c6cb266c0a4592f06461ee989dc65387945f0589bb2357f7ef1c8a1970aa08"
+content-hash = "4d3a3913f4816950bb4e50f06d8fbd2a4b249bde18a1d247646bbadea5d62865"
