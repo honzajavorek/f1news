@@ -16,7 +16,7 @@ feedparser = "^6.0.11"
 httpx = "^0.28.1"
 lxml = "^5.3.1"
 praw = "^7.8.1"
-stamina = "^24.3.0"
+stamina = "^25.1.0"
 
 [build-system]
 requires = ["poetry-core"]
