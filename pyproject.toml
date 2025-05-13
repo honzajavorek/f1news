@@ -11,7 +11,7 @@ f1news = "f1news.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-click = "^8.1.8"
+click = "^8.2.0"
 feedparser = "^6.0.11"
 httpx = "^0.28.1"
 lxml = "^5.4.0"
