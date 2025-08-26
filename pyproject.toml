@@ -14,7 +14,7 @@ python = "^3.12"
 click = "^8.2.1"
 feedparser = "^6.0.11"
 httpx = "^0.28.1"
-lxml = "^6.0.0"
+lxml = "^6.0.1"
 praw = "^7.8.1"
 stamina = "^25.1.0"
 
