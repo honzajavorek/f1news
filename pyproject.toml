@@ -11,10 +11,10 @@ f1news = "f1news.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-click = "^8.2.1"
+click = "^8.3.0"
 feedparser = "^6.0.12"
 httpx = "^0.28.1"
-lxml = "^6.0.1"
+lxml = "^6.0.2"
 praw = "^7.8.1"
 stamina = "^25.1.0"
 
