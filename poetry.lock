@@ -172,14 +172,14 @@ files = [
 
 [[package]]
 name = "click"
-version = "8.4.1"
+version = "8.4.2"
 description = "Composable command line interface toolkit"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "click-8.4.1-py3-none-any.whl", hash = "sha256:482be17c6991b8c19c5429a1e995d9b0efdbb63172824c41f99965dc0ade8ec2"},
-    {file = "click-8.4.1.tar.gz", hash = "sha256:918b5633eddf6b41c32d4f454bf0de810065c74e3f7dbf8ee5452f8be88d3e96"},
+    {file = "click-8.4.2-py3-none-any.whl", hash = "sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"},
+    {file = "click-8.4.2.tar.gz", hash = "sha256:9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6"},
 ]
 
 [package.dependencies]
@@ -451,14 +451,14 @@ htmlsoup = ["BeautifulSoup4"]
 
 [[package]]
 name = "praw"
-version = "8.0.1"
+version = "8.0.2"
 description = "Python Reddit API Wrapper."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "praw-8.0.1-py3-none-any.whl", hash = "sha256:18295994d07b17a565d4663a8778319243c56d7b49fae2504b448607551dfdff"},
-    {file = "praw-8.0.1.tar.gz", hash = "sha256:4083ae0a60d9784e1af4911fa4d87be3518c957636a4001de232fd82c9ac6353"},
+    {file = "praw-8.0.2-py3-none-any.whl", hash = "sha256:22a988bef07e2d840ab062ae25f760c5bfc6367b9ecaab69f71e7ff511d75564"},
+    {file = "praw-8.0.2.tar.gz", hash = "sha256:29bfe995f7f24017dd8eee36153085ad27de1740f13c7dcdb08df42a24a0dae2"},
 ]
 
 [package.dependencies]
