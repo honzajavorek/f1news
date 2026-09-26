@@ -8,8 +8,6 @@ license = {text = "AGPL-3.0-only"}
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.3.2,<9.0.0",
-    "feedparser>=6.0.12,<7.0.0",
-    "httpx>=0.28.1,<0.29.0",
     "lxml>=6.0.4,<7.0.0",
     "praw>=7.8.1,<9.0.0",
     "stamina>=25.2,<27.0",
