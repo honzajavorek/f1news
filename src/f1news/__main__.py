@@ -1,3 +1,4 @@
+import html
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -9,8 +10,22 @@ from lxml import etree
 
 
 ATOM_NS = "http://www.w3.org/2005/Atom"
+MEDIA_NS = "http://search.yahoo.com/mrss/"
 FEED_URL = "https://honzajavorek.github.io/f1news/f1news.xml"
 NEWS_FLAIR = ":post-news: News"
+
+
+def get_image_url(submission) -> str | None:
+    preview = getattr(submission, "preview", None)
+    if preview:
+        try:
+            return html.unescape(preview["images"][0]["source"]["url"])
+        except (KeyError, IndexError):
+            pass
+    thumbnail = submission.thumbnail
+    if thumbnail.startswith("http"):
+        return thumbnail
+    return None
 
 
 @click.command()
@@ -61,7 +76,7 @@ def main(
     click.echo(f"Fetched {len(submissions)} submissions")
 
     click.echo("Building feed")
-    feed = etree.Element("feed", nsmap={None: ATOM_NS})
+    feed = etree.Element("feed", nsmap={None: ATOM_NS, "media": MEDIA_NS})
     now = datetime.now(timezone.utc).isoformat()
     etree.SubElement(feed, "title").text = "F1news"
     etree.SubElement(feed, "id").text = FEED_URL
@@ -83,6 +98,8 @@ def main(
         ).isoformat()
         etree.SubElement(entry, "published").text = published
         etree.SubElement(entry, "updated").text = published
+        if image_url := get_image_url(submission):
+            etree.SubElement(entry, f"{{{MEDIA_NS}}}thumbnail", {"url": image_url})
 
     click.echo(f"Writing feed to {output_path}")
     Path(output_path).write_bytes(
