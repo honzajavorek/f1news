@@ -104,8 +104,11 @@ def main(
         etree.SubElement(entry, "published").text = published
         etree.SubElement(entry, "updated").text = published
         focus_url = get_focus_url(submission.url)
-        summary = etree.SubElement(entry, "summary", {"type": "html"})
-        summary.text = f'<a href="{focus_url}">Open in Firefox Focus</a>'
+        summary_html = f'<a href="{focus_url}">Open in Firefox Focus</a>'
+        if submission.selftext:
+            description = html.escape(submission.selftext).replace("\n", "<br>")
+            summary_html += f"<hr>{description}"
+        etree.SubElement(entry, "summary", {"type": "html"}).text = summary_html
         if image_url := get_image_url(submission):
             etree.SubElement(entry, f"{{{MEDIA_NS}}}thumbnail", {"url": image_url})
 
