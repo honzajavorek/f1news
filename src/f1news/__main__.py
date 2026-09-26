@@ -13,6 +13,7 @@ from lxml import etree
 ATOM_NS = "http://www.w3.org/2005/Atom"
 MEDIA_NS = "http://search.yahoo.com/mrss/"
 FEED_URL = "https://honzajavorek.github.io/f1news/f1news.xml"
+FEED_ICON_URL = "https://www.formula1.com/favicon.ico"
 NEWS_FLAIR = ":post-news: News"
 
 
@@ -85,6 +86,7 @@ def main(
     now = datetime.now(timezone.utc).isoformat()
     etree.SubElement(feed, "title").text = "F1news"
     etree.SubElement(feed, "id").text = FEED_URL
+    etree.SubElement(feed, "icon").text = FEED_ICON_URL
     etree.SubElement(feed, "updated").text = now
     etree.SubElement(
         feed, "link", {"rel": "self", "href": FEED_URL, "type": "application/atom+xml"}
@@ -104,7 +106,8 @@ def main(
         etree.SubElement(entry, "published").text = published
         etree.SubElement(entry, "updated").text = published
         focus_url = get_focus_url(submission.url)
-        summary_html = f'<a href="{focus_url}">Open in Firefox Focus</a>'
+        domain = html.escape(submission.domain)
+        summary_html = f'{domain} · <a href="{focus_url}">Open in Firefox Focus</a>'
         etree.SubElement(entry, "summary", {"type": "html"}).text = summary_html
         if image_url := get_image_url(submission):
             etree.SubElement(entry, f"{{{MEDIA_NS}}}thumbnail", {"url": image_url})
