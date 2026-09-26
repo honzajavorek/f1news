@@ -1,6 +1,7 @@
 import html
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import quote
 
 import click
 import praw
@@ -13,6 +14,10 @@ ATOM_NS = "http://www.w3.org/2005/Atom"
 MEDIA_NS = "http://search.yahoo.com/mrss/"
 FEED_URL = "https://honzajavorek.github.io/f1news/f1news.xml"
 NEWS_FLAIR = ":post-news: News"
+
+
+def get_focus_url(url: str) -> str:
+    return f"firefox-focus://open-url?url={quote(url, safe='')}"
 
 
 def get_image_url(submission) -> str | None:
@@ -98,6 +103,9 @@ def main(
         ).isoformat()
         etree.SubElement(entry, "published").text = published
         etree.SubElement(entry, "updated").text = published
+        focus_url = get_focus_url(submission.url)
+        summary = etree.SubElement(entry, "summary", {"type": "html"})
+        summary.text = f'<a href="{focus_url}">Open in Firefox Focus</a>'
         if image_url := get_image_url(submission):
             etree.SubElement(entry, f"{{{MEDIA_NS}}}thumbnail", {"url": image_url})
 
