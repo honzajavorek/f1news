@@ -1,0 +1,52 @@
+name: debug-fields
+
+on:
+  workflow_dispatch:
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Inspect submission fields
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+        run: |
+          uv run python -c "
+          import os
+          import praw
+
+          reddit = praw.Reddit(
+              client_id=os.environ['REDDIT_CLIENT_ID'],
+              client_secret=os.environ['REDDIT_CLIENT_SECRET'],
+              user_agent='F1news debug (+https://github.com/honzajavorek/f1news/)',
+          )
+          reddit.read_only = True
+
+          count = 0
+          for submission in reddit.subreddit('formula1').new(limit=100):
+              if submission.link_flair_text != ':post-news: News':
+                  continue
+              count += 1
+              print('=' * 60)
+              print('title:', submission.title)
+              print('is_self:', submission.is_self)
+              print('domain:', submission.domain)
+              print('url:', submission.url)
+              print('selftext repr (first 300 chars):', repr(submission.selftext[:300]))
+              print('selftext_html repr (first 300 chars):', repr((submission.selftext_html or '')[:300]))
+              if count >= 8:
+                  break
+          print('=' * 60)
+          print('total checked:', count)
+          "
